@@ -21,3 +21,53 @@ b<-"你好"
 bVector<-c("你好","How are you?")
 ```
 
+```{r}
+round(2.3875)
+```
+```{r}
+round(2.3875,digits = 2) #digits=a 四捨五入到小數點後的第a位
+```
+
+#Factor
+
+```{r}
+library(readr)
+student <- read_csv("https://raw.githubusercontent.com/tpemartin/course-107-1-programming-for-data-science/master/data/student.csv")
+library(dplyr)
+library(magrittr)
+student %<>% mutate(
+  身高級距=cut(身高,c(0,150,155,160,165,170,175,180,185,200)))
+```
+
+```{r}
+student$出生地
+```
+
+```{r}
+as.factor(student$出生地)->student$出生地
+```
+
+```{r}
+levels(student$出生地)
+```
+
+```{r}
+table(student$出生地)
+```
+
+```{r}
+as.factor(student$入學年)->student$入學年
+as.factor(student$性別)->student$性別
+```
+
+```{r}
+factor(student$身高級距,
+       levels=c("(0,150]","(150,155]", "(155,160]", "(160,165]" ,"(165,170]", "(170,175]" ,"(175,180]" ,"(180,185]", "(185,200]"),
+       ordered=TRUE) -> student$身高級距#ordered=TRUE 可知數值是可比較的
+```
+
+```{r}
+?factor #help 內會有要找的問題答案
+```
+
+
