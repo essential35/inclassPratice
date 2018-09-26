@@ -67,7 +67,16 @@ factor(student$身高級距,
 ```
 
 ```{r}
-?factor #help 內會有要找的問題答案
+?factor #help search (help 內會有要找的問題答案)
+```
+
+#Date and Time
+
+```{r}
+library(dplyr)
+library(lubridate) #library（lubridate）之後輸入的ymd，皆會顯示；if是 lubridate::ymd("2017/01/31") ，就只會顯示 :: 之後的ymd日期
+c <- ymd("2017-01-31") 
+d <- ymd_hms("2017-01-31 20:11:59")
 ```
 
 
