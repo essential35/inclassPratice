@@ -1,0 +1,62 @@
+---
+title: "pratice1(class-20180926)"
+output: html_document
+---
+
+```{r}
+?factor
+```
+
+```{r}
+?numeric
+```
+
+```{r}
+?character
+```
+
+
+```{r}
+library(readr)
+student <- read_csv("https://raw.githubusercontent.com/tpemartin/course-107-1-programming-for-data-science/master/data/student.csv")
+library(dplyr)
+library(magrittr)
+student %<>% mutate(
+  身高級距=cut(身高,c(0,150,155,160,165,170,175,180,185,200)))
+```
+
+```{r}
+as.factor(student$入學年)->student$入學年
+```
+
+```{r}
+levels(student$入學年) #入學年的類別
+```
+```{r}
+nlevels(student$入學年)#入學年類別的個數
+```
+
+
+```{r}
+table(student$入學年)#各個入學年的人數
+```
+```{r}
+as.factor(student$性別)->student$性別
+```
+```{r}
+levels(student$性別)
+```
+```{r}
+table(student$性別)
+```
+
+```{r}
+as.factor(student$身高)->student$身高
+```
+```{r}
+levels(student$身高)
+```
+```{r}
+table(student$身高)
+```
+
