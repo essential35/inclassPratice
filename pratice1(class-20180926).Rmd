@@ -3,17 +3,34 @@ title: "pratice1(class-20180926)"
 output: html_document
 ---
 
+#Factor(levels,table),Numeric,Character
 ```{r}
-?factor
+?factor #系列變數
+```
+```{r}
+gender <- c("男性", "男性", "女性", "男性", "女性", "男性")
+as.factor(gender)
+factor(gender,levels = c("男性", "女性"),labels = c("Male","Female"))
 ```
 
 ```{r}
-?numeric
+?numeric #數字
+```
+```{r}
+as.numeric(c("-.1"," 2.7 ","B")) # (-0.1, 2.7, NA)  +  warning
+#將c（）裡的東西轉換成數字型態
 ```
 
+
 ```{r}
-?character
+?character #字符
 ```
+```{r}
+form <- y ~ a + b + 1
+as.character(form)  ## length 3
+deparse(form)       ## like the input
+```
+
 
 
 ```{r}
@@ -58,5 +75,38 @@ levels(student$身高)
 ```
 ```{r}
 table(student$身高)
+```
+
+```{r}
+as.factor(student$出生地)->student$出生地
+```
+```{r}
+nlevels(student$出生地)
+```
+
+
+#Date and Time
+
+```{r}
+library(dplyr)
+library(lubridate)
+a <- seq(ymd("2001-01-01"),ymd("2018-09-01"),by="month")
+b <- seq(ymd("2001-01-01"),ymd("2018-09-01"),by="quarter")
+c <- seq(ymd("2001-01-01"),ymd("2018-09-01"),by="year")
+#依by=?來編輯出一個序列，例如a就是依月來編輯序列，所以序列的各式(format)是2001-01-01、2001-02-01···
+```
+
+#C
+```{r}
+?c
+```
+```{r}
+?head
+
+```
+```{r}
+library(readr)
+student <- read_csv("https://raw.githubusercontent.com/tpemartin/course-107-1-programming-for-data-science/master/data/student.csv")
+head(student,n = 10L)
 ```
 
