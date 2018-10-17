@@ -1,0 +1,39 @@
+---
+title: '2018-10-17'
+output: html_document
+---
+#上次的練習(投票影片的結果)
+```{r}
+library(stringr)
+a<-c("A, B","B, C")
+a
+str_split_fixed(a,",", n=3)->b
+table(b)
+b
+```
+
+
+```{r}
+library(stringr)
+a<-c("A, B","B, C")
+a
+str_split_fixed(a,", ", n=3)->b
+str_c(b)->c
+c
+table(b)
+b
+```
+#data frame
+#從Google載表單
+```{r}
+library(googlesheets)
+```
+```{r}
+gs_auth(new_user = TRUE)
+```
+
+```{r}
+gsSurvey<-gs_key("1mC9bnxj11NCNoOCw0Vmn4nxERbHtLjeGo9v9C9b2GDE")  #download sheet information as an object
+classSurvey<-gs_read(gsSurvey,ws=1) #access the 1st worksheet
+```
+

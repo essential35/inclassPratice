@@ -87,7 +87,12 @@ table(cc)
 #taiwan date-time
 ```{r}
 民國年月<-c("099/01","099/02","099/03")
-str_c("1,"民國年月,"/01")
+str_c()
+str_c(lubridate::民國年月 + years(911) )
+
 ```
+
+
+
 
 
