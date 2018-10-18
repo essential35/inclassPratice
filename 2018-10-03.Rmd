@@ -98,6 +98,18 @@ format(as.POSIXct(西元年月日),format=" %Y/%m")->西元年月
 
 
 ```
+```{r}
+民國年月<-c("099/01","099/02","099/03")
+str_c("1",民國年月,'/01')->year1
+library(lubridate)
+ymd(year1)->year2
+str_c(year2 + years(911))->西元年月日
+as.factor(西元年月日)->西元年月日
+str_replace(西元年月日,"-01","")->西元年月
+
+西元年月
+
+```
 
 
 
