@@ -90,9 +90,15 @@ table(cc)
 str_c("1",民國年月,'/01')->year1
 library(lubridate)
 ymd(year1)->year2
-str_c(year2 + years(911))
+str_c(year2 + years(911))->西元年月日
+format(as.POSIXct(西元年月日),format=" %Y/%m")->西元年月
+#提取關鍵信息format，其可識別as.POSIXct/as.POSIXlt
+# %Y-年,%m-月
+西元年月
+
 
 ```
+
 
 
 
