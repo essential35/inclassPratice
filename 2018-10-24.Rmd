@@ -1,0 +1,94 @@
+---
+title: '2018-10-24'
+output: html_document
+---
+#pratice
+```{r}
+library(googlesheets)
+```
+```{r}
+gs_auth(new_user = TRUE)
+```
+
+
+```{r}
+gsSurvey<-gs_key("1mC9bnxj11NCNoOCw0Vmn4nxERbHtLjeGo9v9C9b2GDE")  #download sheet information as an object
+classSurvey<-gs_read(gsSurvey,ws=1) #access the 1st worksheet
+```
+
+```{r}
+head(classSurvey,10) #10——到第10筆
+```
+
+```{r}
+names(classSurvey) #兩個都一樣的意思
+colnames(classSurvey)
+```
+```{r}
+row.names(classSurvey)
+```
+
+
+
+
+#class---Data Frame
+```{r}
+StuDF <- data.frame(
+  StuID=c(1,2,3,4,5),
+  name=c("小明","大雄","胖虎","小新","大白"),
+  score=c(80,60,90,70,50)
+  )
+StuDF 
+```
+```{r}
+StuDF <- data.frame(
+  StuID=c(1,2,3,4,5),
+  name=c("小明","大雄","胖虎","小新","大白"),
+  score=c(80,60,90,70,50),
+  stringsAsFactors = F #不要字串進來就變成factor
+  )
+StuDF 
+```
+#1.names
+```{r}
+names(StuDF) 
+colnames(StuDF) #列的名稱
+```
+```{r}
+row.names(StuDF) #行的名稱
+```
+```{r}
+StuDF[1,2] #取第一個row的第二個值，即（1，2）的值
+StuDF[,2] #空白，即不選
+StuDF[1,]
+StuDF[c(1,4),] #選1 & 4整行的值，因為column沒有設定
+StuDF[c(1,4),c(2,3)] #選1 & 4的2、3列的值
+```
+```{r}
+StuDF[c(1,2,3),]
+StuDF[c(1:3),] #：取1到3行的值
+StuDF[c(1:3,5),]
+```
+
+#2.numerical/logical index
+#  matrix index
+```{r}
+StuDF[c(1,4),]
+StuDF[-c(1,4),] #非1、4 整行的值（因為有"-"）
+```
+#  true/false
+```{r}
+StuDF[c(T,F,F,F,F),c(F,T,F)] #另一種方式叫數據進來，T(true)-in，F(false)-not in
+StuDF[c(T,F,F,T,F),]
+```
+```{r}
+a<-c(T,T,F,F,T,F,F)
+sum(a) #加總
+```
+```{r}
+StuDF[c(T,F,F,F,F),] #同StuDF[1,]
+```
+```{r}
+StuDF[c(T,F,F,T,F),c(F,T,T,F,F)] #同StuDF[c(1,4),c(2,3)]
+```
+
