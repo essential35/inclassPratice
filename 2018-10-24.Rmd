@@ -141,8 +141,8 @@ classSurvey[peopleTaipei == "台北市",3]
 stringr::str_sub(classSurvey$居住地行政區,1,3)->peopleNewTaipei
 classSurvey[peopleTaipei == "新北市",3]
 
-(classSurvey$居住地行政區 == "新北市")->peopleNewTaipei
-classSurvey[c(peopleNewTaipei),3]   #?why not
+(classSurvey$居住地行政區 == "新北市三峽區")->peopleNewTaipei
+classSurvey[peopleNewTaipei,3]   #?why not
 ```
 
 ```{r}
