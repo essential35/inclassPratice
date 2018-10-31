@@ -4,17 +4,28 @@ output: html_document
 ---
 #pratice
 ```{r}
-library(googlesheets)
+library(googlesheets)#gs_auth(new_user = TRUE)
 ```
 ```{r}
-#gs_auth(new_user = TRUE)
+Sys.setlocale("LC_CTYPE", "en_US.UTF-8")
 ```
 
 
 ```{r}
 gsSurvey<-gs_key("1mC9bnxj11NCNoOCw0Vmn4nxERbHtLjeGo9v9C9b2GDE")  #download sheet information as an object
-classSurvey<-gs_read(gsSurvey,ws=1) #access the 1st worksheet
+classSurvey<-gs_read(gsSurvey,ws=1,locale=readr::locale(encoding = "UTF-8")) #access the 1st worksheet
+
+library(readr)
+classSurvey<-read.csv("classSurvey.csv")
 ```
+```{r}
+library(readr)
+classSurvey<-read.csv("classSurvey.csv",header = TRUE,fileEncoding = "UTF-8")
+View(classSurvey)
+```
+
+
+
 
 ```{r}
 head(classSurvey,10) #10——到第10筆
@@ -123,8 +134,15 @@ cbind(bb,cc,dd) #將上述分成bb，cc，dd列出判斷
 ```{r}
 (classSurvey$性別 == "男" & classSurvey$本學期學分數 > 26)->people
 classSurvey[c(people),3]
-stringr::str_split_fixed(classSurvey$居住地行政區,) #?
-(classSurvey$居住地行政區 == "台北市")
+
+stringr::str_sub(classSurvey$居住地行政區,1,3)->peopleTaipei
+classSurvey[peopleTaipei == "台北市",3]
+
+stringr::str_sub(classSurvey$居住地行政區,1,3)->peopleNewTaipei
+classSurvey[peopleTaipei == "新北市",3]
+
+(classSurvey$居住地行政區 == "新北市")->peopleNewTaipei
+classSurvey[c(peopleNewTaipei),3]   #?why not
 ```
 
 ```{r}
