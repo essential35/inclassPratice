@@ -69,6 +69,7 @@ student %<>% mutate(
 ```
 ```{r}
 levels(student$身高級距) #找出有的組合名稱
+class(student$身高級距)
 levels(student$身高級距)[c(1:3)]<-c("(0,160]")
 #將上一行列出的級距（1到3個）換成（0，160]
 
@@ -78,7 +79,7 @@ levels(student$身高級距)[c(1:3)]<-c("(0,160]")
 
 ```{r} 
 #1.1
-dim(classSurvey)  #dimension,每個維度有多少變數
+dim(classSurvey)  #dimension,每個維度有多少變數;dim()<-value(幾乘幾的矩陣)
 ```
 
 ```{r} 
@@ -95,7 +96,32 @@ levels(classSurvey$年級)<-c("大四及以上","大三","大二","大一")
 
 ```{r}
 #1.3
+table(classSurvey$年級)
+```
 
+```{r}
+#1.4
+(classSurvey$年級 == "大二")->secondy
+classSurvey[c(secondy),]->secondy
+
+(secondy$性別 == "男")->secondyM
+as.data.frame(table(secondyM))->secondyM
+
+length(secondyM$Freq)/nrow(secondy)
+
+
+```
+
+```{r}
+#1.5
+(classSurvey$年級 == "大一")->fresh
+classSurvey[c(fresh),6]->fresh
+nrow(fresh)
+
+(classSurvey$年級 == "大一" & classSurvey$性別 == "男")->fresh
+nrow(classSurvey[c(fresh),3])
+
+nrow(classSurvey[c(fresh),3])/nrow(fresh)
 ```
 
 
@@ -103,7 +129,7 @@ levels(classSurvey$年級)<-c("大四及以上","大三","大二","大一")
 #1.6
 (classSurvey$年級 == "大一")->newActivity
 classSurvey[newActivity,8]->newActivity
-stringr::str_split_fixed(newActivity$本學期目前已參加之課外活動,", ",n=2)->newActivity1
+stringr::str_split_fixed(newActivity$本學期目前已參加之課外活動,",",n=2)->newActivity1
 stringr::str_c(newActivity1)->newActivity1 #從矩陣拆成factor
 table(newActivity1)
 ```
