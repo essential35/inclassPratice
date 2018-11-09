@@ -167,4 +167,42 @@ collegeData %>%
 ```
 
 
+#homework try
+
+```{r}
+x <- c(0:10, 50)
+mean(x)
+c(mean(x), mean(x, trim = 0.10))
+#tim=0.1----先把最大的10%和最小10%的數去掉，在算平均
+
+```
+```{r}
+sum(1, 2, 3, 4, 5)
+
+sum(1:5)
+
+sum(1:2, 3:5)
+
+sum(1:5, NA, na.rm = TRUE)
+```
+```{r}
+fruit <- c("apple", "banana", "pear", "pinapple")
+str_which(fruit, "e")#選出要的東西的位置
+```
+```{r}
+x <- cbind(x1 = 3, x2 = c(4:1, 2:5))
+rowSums(x)
+```
+
+```{r}
+which(1:10 > 3, arr.ind = TRUE)
+```
+```{r}
+fruit <- c("apple", "banana", "pear", "pineapple")
+str_locate(fruit, "a")
+```
+```{r}
+m2 <- cbind(1, 1:4)
+colnames(m2) <- c("x","Y")
+```
 
