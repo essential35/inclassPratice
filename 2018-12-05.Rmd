@@ -1,0 +1,38 @@
+---
+title: "2018-12-5"
+output: html_document
+---
+```{r}
+Sys.setlocale("LC_CTYPE", "en_US.UTF-8")
+```
+
+
+```{r}
+library(readr)
+libraryData <- read_csv("https://raw.githubusercontent.com/tpemartin/github-data/master/libraryData.csv")
+```
+```{r}
+library(dplyr)
+library(lubridate)
+library(stringr)
+libraryData %>%
+  mutate(
+    書籍類別=as.factor(書籍類別),
+    讀者借閱冊數=as.numeric(讀者借閱冊數),
+    書籍出版日期=str_c(書籍出版日期,"-01-01"),
+    書籍出版日期=as.POSIXct(書籍出版日期),
+    書籍館藏地=as.factor(書籍館藏地),
+    讀者年級=as.factor(讀者年級),
+    學院=as.factor(學院)
+  )->libraryData
+
+```
+
+```{r}
+table(libraryData$書籍類別)
+```
+
+```{r}
+psych::describe(libraryData$讀者借閱冊數)
+```
+
