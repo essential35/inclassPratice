@@ -9,30 +9,164 @@ Sys.setlocale("LC_CTYPE", "en_US.UTF-8")
 
 ```{r}
 library(readr)
-libraryData <- read_csv("https://raw.githubusercontent.com/tpemartin/github-data/master/libraryData.csv")
+libraryData <- read_csv("https://raw.githubusercontent.com/tpemartin/github-data/master/library100_102.csv")
 ```
+
 ```{r}
 library(dplyr)
 library(lubridate)
-library(stringr)
 libraryData %>%
   mutate(
-    書籍類別=as.factor(書籍類別),
-    讀者借閱冊數=as.numeric(讀者借閱冊數),
-    書籍出版日期=str_c(書籍出版日期,"-01-01"),
-    書籍出版日期=as.POSIXct(書籍出版日期),
+    學院=as.factor(學院),
     書籍館藏地=as.factor(書籍館藏地),
-    讀者年級=as.factor(讀者年級),
-    學院=as.factor(學院)
-  )->libraryData
+    書籍類別=as.factor(書籍類別),
+    借閱時間=ymd_hms(借閱時間,tz="Asia/Taipei")
+  ) -> libraryData
+```
 
+#create a function to use
+```{r}
+## 1
+max(libraryData$讀者借閱冊數)-> maxNumber
+min(libraryData$讀者借閱冊數)-> minNumber
+paste0("最大值： ",maxNumber, " 最小值： ",minNumber)
+
+## 2
+max(libraryData$入學年)-> maxNumber
+min(libraryData$入學年)-> minNumber
+paste0("最大值： ",maxNumber, " 最小值： ",minNumber)
+
+## 3
+max(libraryData$書籍上架年月)-> maxNumber
+min(libraryData$書籍上架年月)-> minNumber
+paste0("最大值： ",maxNumber, " 最小值： ",minNumber) #黏成一個character;paste0-do a simple job (paste-is more complicate on setting)
 ```
 
 ```{r}
-table(libraryData$書籍類別)
+minMaxFun <- function(x){ # x->input(variable);function can work like things
+  max(x)-> maxNumber
+  min(x)-> minNumber
+  paste0("最大值： ",maxNumber, " 最小值： ",minNumber) ->result
+  return(result) #不寫 “ ->result    return(result)”，結果仍會出來最後paste0的結果
+}
 ```
 
 ```{r}
-psych::describe(libraryData$讀者借閱冊數)
+#continue line 44~50
+minMaxFun(libraryData$讀者借閱冊數)
+
+minMaxFun(libraryData$入學年)
+
+minMaxFun(libraryData$書籍上架年月)
 ```
+
+```{r}
+minMaxFun <- function(x){ # x->input(variable);function can work like things
+  max(x)-> maxNumber
+  min(x)-> minNumber
+  paste0("最大值： ",maxNumber, " 最小值： ",minNumber) 
+  
+  return(maxNumber) #only return/print the result of "maxNumber" 
+}
+```
+
+```{r}
+minMaxFun(libraryData$讀者借閱冊數)
+
+minMaxFun(libraryData$入學年)
+
+minMaxFun(libraryData$書籍上架年月)
+```
+
+```{r}
+minMaxFun <- function(x){ # x->input(variable);function can work like things
+  max(x)-> maxNumber
+  min(x)-> minNumber
+  paste0("最大值： ",maxNumber, " 最小值： ",minNumber) %>%
+    print #在這裏加 “print” 下面91～93 就直接印出 “paste0”的程式；not “maxNumber”的值
+  
+  return(maxNumber)  
+}
+```
+
+```{r}
+minMaxFun(libraryData$讀者借閱冊數)->a #but "a" is the answer of 'return(maxNumber)'
+```
+```{r}
+not_numeric<-function(x){
+  !is.numeric(x)
+}
+```
+```{r}
+not_numeric(libraryData$學號)
+```
+##grouping and summarise group feature
+```{r}
+find_my_college<-function(x){
+  (libraryData$學院==x)->logIndex
+  libraryData[logIndex,]->subsample
+  return(subsample)
+}
+```
+```{r}
+##grouping
+find_my_college("人文學院")->sample1
+find_my_college("社會科學院")->sample2
+
+##group feature summary
+nrow(sample1)
+nrow(sample2)
+```
+```{r}
+#way 2 
+libraryData %>%
+  group_by(學院) %>% #分各個學院表示 
+  summarise(
+     學院借閱冊書=length(學號) #nrow(factor)
+  )
+```
+
+
+
+```{r}
+libraryData %>%
+  select(讀者借閱冊數,書籍出版日期) 
+```
+```{r}
+libraryData %>%
+  select(讀者借閱冊數,書籍出版日期) %>%
+  summarise(
+    讀者平均借閱冊數=mean(讀者借閱冊數),
+    最小書籍出版日期=min(書籍出版日期,na.rm = T),
+    最大書籍出版日期=max(書籍出版日期,na.rm = T)
+  )
+```
+
+```{r}
+library(summarytools)
+libraryData %>%
+  select_if(
+    is.numeric
+  ) %>% summarytools::dfSummary() %>% summarytools::view(.)
+```
+
+```{r}
+(libraryData$書籍出版日期 == 1199) %>%
+  which(.) %>% libraryData[.,]
+```
+```{r}
+#把 出版日期：9999改成NA
+(libraryData$書籍出版日期 == 9999) %>%
+  which(.) %>% libraryData[.,]
+```
+
+```{r}
+library(summarytools)
+libraryData %>%
+  select_if(#選出特定的
+   not_numeric #篩選條件
+  ) %>% summarytools::dfSummary() %>% summarytools::view(.)
+```
+
+
 
