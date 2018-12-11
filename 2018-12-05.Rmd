@@ -157,7 +157,8 @@ libraryData %>%
 ```{r}
 #把 出版日期：9999改成NA
 (libraryData$書籍出版日期 == 9999) %>%
-  which(.) %>% libraryData[.,]
+  which(.) %>% libraryData[.,] ->changedIndex
+stringr::str_
 ```
 
 ```{r}
