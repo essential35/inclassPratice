@@ -156,9 +156,9 @@ libraryData %>%
 ```
 ```{r}
 #把 出版日期：9999改成NA
-(libraryData$書籍出版日期 == 9999) %>%
-  which(.) %>% libraryData[.,] ->changedIndex
-stringr::str_
+(libraryData$書籍出版日期==9999) -> logiIndex # 回傳每筆書籍出版日期是否為9999
+ libraryData$書籍出版日期[logiIndex] <-  # 選出為9999的樣本
+   NA # 將它換成NA
 ```
 
 ```{r}
