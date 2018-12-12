@@ -1,0 +1,195 @@
+---
+title: '2018-12-12'
+output: html_document
+---
+
+```{r}
+Sys.setlocale("LC_CTYPE", "en_US.UTF-8")
+```
+
+```{r}
+library(readr)
+libraryData <- read_csv("https://raw.githubusercontent.com/tpemartin/github-data/master/library100_102.csv")
+```
+#書籍館藏地
+```{r}
+libraryData %>%
+  mutate(
+    書籍館藏地=as.factor(書籍館藏地)
+  )->libraryData
+levels(libraryData$書籍館藏地)->storageLocations
+storageLocations
+```
+
+```{r}
+# 0
+allBorrowCount <- vector("numeric",18)
+i<-1
+  # 1
+  storageLocation_i <- storageLocations[i] 
+  # 2
+  numericalIndexForSubsample<-which(libraryData$書籍館藏地==storageLocation_i)
+  subsample_i <- libraryData[numericalIndexForSubsample,]
+  # 3
+  borrowCount_i <- nrow(subsample_i)
+  # 4
+  allBorrowCount[[i]]<-borrowCount_i #只塞一個位置時，用兩個中括號
+```
+```{r}
+i<-2   #i=1,and i=2 都會存入allBorrowCount
+  # 1
+  storageLocation_i <- storageLocations[i] 
+  # 2
+  numericalIndexForSubsample<-which(libraryData$書籍館藏地==storageLocation_i)
+  subsample_i <- libraryData[numericalIndexForSubsample,]
+  # 3
+  borrowCount_i <- nrow(subsample_i)
+  # 4
+  allBorrowCount[[i]]<-borrowCount_i 
+```
+
+```{r}
+#不想反覆存i，用for,then 18個空位都填滿了
+for (i in c(1:18)) {
+  # 1
+  storageLocation_i <- storageLocations[i] 
+  # 2
+  numericalIndexForSubsample<-which(libraryData$書籍館藏地==storageLocation_i)
+  subsample_i <- libraryData[numericalIndexForSubsample,]
+  # 3
+  borrowCount_i <- nrow(subsample_i)
+  # 4
+  allBorrowCount[[i]]<-borrowCount_i 
+}
+```
+
+```{r}
+names(allBorrowCount)<-storageLocations #allBorrowCount內的數字代號會變成中文字的內容
+```
+
+#每個學院的借書量
+```{r}
+libraryData$學院 %>% as.factor %>% levels -> college
+college
+```
+
+```{r}
+collegeBorrow<-vector("numeric",length(college)) #用length算college的量
+for (i in c(1:length(college))) {
+  college_i <- college[i]
+  numericalIndexForSubsample<-which(libraryData$學院==college_i)
+  #數值來表示位置
+  collegesubsample_i <- libraryData[numericalIndexForSubsample,]
+  collegeBorrow_i <- nrow(collegesubsample_i)
+  collegeBorrow[[i]]<-collegeBorrow_i
+}
+names(collegeBorrow)<-college
+```
+
+```{r}
+collegeBorrow<-vector("numeric",length(college))
+for (i in seq_along(college)) {
+  college_i <- college[i]
+  numericalIndexForSubsample<-which(libraryData$學院==college_i)
+  #數值來表示位置
+  collegesubsample_i <- libraryData[numericalIndexForSubsample,]
+  collegeBorrow_i <- nrow(collegesubsample_i)
+  collegeBorrow[[i]]<-collegeBorrow_i
+}
+names(collegeBorrow)<-college
+```
+
+
+#每個學生借書的量
+```{r}
+libraryData$學號 %>% as.factor %>% levels ->students
+students
+
+#libraryData$學號 %>% unique ->students #unique 保留沒有重複的部分
+```
+```{r}
+studentsBorrow<-vector("numeric",length(students))
+for (i in c(1:length(students))) {
+  students_i<-students[i]
+  numericalIndexForSubsample<-which(libraryData$學號==students_i)
+  studentssubsample_i<- libraryData[numericalIndexForSubsample,]
+  studentsBorrow_i<-nrow(studentssubsample_i) #length(studentssubsampel_i$學號)
+  studentsBorrow[[i]]<-studentsBorrow_i
+}
+names(studentsBorrow)<-students
+
+```
+
+#連加
+
+$$\sum_{i=1}^{10} i$$
+
+```{r}
+ans<-0
+for (i in 1:10) {
+  newlyAdded<-i
+  ans<-ans+newlyAdded
+}
+ans
+```
+#dplyr:group_by
+##書籍館藏地
+```{r}
+libraryData %>%
+  group_by(書籍館藏地) %>%
+  summarise(
+    borrowCount=length(學號)
+  ) -> result
+result
+
+#dplyr 分好18個subsample
+#summarise--一串變數只回傳一個數字時用，表->數字;mutate---一串數字進來，出來也是一串數字
+```
+#多變群變數
+```{r}
+#dplyr::group_by
+libraryData %>%
+  group_by(學院,入學年) %>%
+  summarise(
+    borrowCount=length(學號)
+  ) %>%
+  ungroup -> result2 #group_by 完，一定要ungroup 結尾
+result2
+```
+
+```{r}
+#for-double loops
+libraryData$入學年 %>% unique ->entranceyear
+entranceyearBorrow<-vector("numeric",length(entranceyear))
+for (i in seq_along(college)) {
+  for (j in seq_along(entranceyear)) {
+    entranceyear_j<-entranceyear[j]
+  numericalIndexForSubsample<-which(libraryData$入學年==entranceyear_j)
+  entranceyearsubsample_j<- libraryData[numericalIndexForSubsample,]
+  entranceyearBorrow_j<-nrow(entranceyearsubsample_j) 
+  entranceyearBorrow[[j]]<-entranceyearBorrow_j
+  }
+  college_i <- college[i]
+  numericalIndexForSubsample<-which(libraryData$學院==college_i)
+  #數值來表示位置
+  collegesubsample_i <- libraryData[numericalIndexForSubsample,]
+  collegeBorrow_i <- nrow(collegesubsample_i)
+  collegeBorrow[[i]]<-collegeBorrow_i
+}
+names(collegeBorrow)<-college
+names(entranceyearBorrow)<-entranceyear
+```
+
+```{r}
+as.POSIXct(libraryData$借閱時間,"Asia/Taipei") ->libraryData$借閱時間
+```
+```{r}
+libraryData %>%
+  group_by(學號) %>%
+  summarise(
+    第一次借書=min(借閱時間)
+  ) %>%
+  ungroup -> result4
+result4
+```
+
