@@ -74,7 +74,7 @@ college
 ```
 
 ```{r}
-collegeBorrow<-vector("numeric",length(college)) #用length算college的量
+collegeBorrow<-vector("numeric",length(college)) #用length算(存)college的量
 for (i in c(1:length(college))) {
   college_i <- college[i]
   numericalIndexForSubsample<-which(libraryData$學院==college_i)
@@ -93,8 +93,19 @@ for (i in seq_along(college)) {
   numericalIndexForSubsample<-which(libraryData$學院==college_i)
   #數值來表示位置
   collegesubsample_i <- libraryData[numericalIndexForSubsample,]
+  #以上可用filter代替之，把該學院的所有row取出
   collegeBorrow_i <- nrow(collegesubsample_i)
   collegeBorrow[[i]]<-collegeBorrow_i
+}
+names(collegeBorrow)<-college
+```
+
+```{r}
+collegeBorrow<-vector("numeric",length(college))
+for (i in 1:length(college)) {
+  libraryData %>%
+    filter(學院 == college[i]) %>%  #filter--把符合條件的學院之所有的row取出
+    nrow -> collegeBorrow[i] 
 }
 names(collegeBorrow)<-college
 ```
@@ -191,5 +202,28 @@ libraryData %>%
   ) %>%
   ungroup -> result4
 result4
+```
+
+#the difference between [[]] and []
+```{r}
+a<-c("A","D","E")
+# 兩者相同
+a[1]
+a[[1]]
+# 取多個
+a[c(1,2)]
+# ERROR a[[c(1,2)]]
+a[[c(1,2)]]
+```
+```{r}
+b<-c(element1="A",element2="D",element3="E")
+b[1] #會保留element
+b[[1]] #直接出來內容
+```
+```{r}
+libraryData["書籍館藏地"] %>% class
+#把答案列表呈現
+libraryData[["書籍館藏地"]] %>% class
+#全部都以factor呈現
 ```
 
