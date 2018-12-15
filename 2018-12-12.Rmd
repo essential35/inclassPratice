@@ -108,6 +108,7 @@ for (i in 1:length(college)) {
     nrow -> collegeBorrow[i] 
 }
 names(collegeBorrow)<-college
+
 ```
 
 
@@ -180,12 +181,7 @@ for (i in seq_along(college)) {
   entranceyearBorrow_j<-nrow(entranceyearsubsample_j) 
   entranceyearBorrow[[j]]<-entranceyearBorrow_j
   }
-  college_i <- college[i]
-  numericalIndexForSubsample<-which(libraryData$學院==college_i)
-  #數值來表示位置
-  collegesubsample_i <- libraryData[numericalIndexForSubsample,]
-  collegeBorrow_i <- nrow(collegesubsample_i)
-  collegeBorrow[[i]]<-collegeBorrow_i
+  
 }
 names(collegeBorrow)<-college
 names(entranceyearBorrow)<-entranceyear
@@ -226,4 +222,9 @@ libraryData["書籍館藏地"] %>% class
 libraryData[["書籍館藏地"]] %>% class
 #全部都以factor呈現
 ```
+#輸出空行
+```{r}
+cat("hello\nworld\n")
+```
+
 
