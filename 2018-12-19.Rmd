@@ -1,0 +1,68 @@
+---
+title: '2018-12-19'
+output: html_document
+---
+
+
+```{r}
+Sys.setlocale("LC_CTYPE", "en_US.UTF-8")
+```
+
+#Data
+```{r}
+a<-c(1:10)
+typeof(a)
+```
+
+```{r}
+b<-list("a","b",1:10) #此向量有三個元素，且第三個元素的長度為1～10;data.frame 是list的一種形式
+typeof(b)
+```
+##Recursive objects,可不斷加深的list
+```{r}
+b2<-list("a","b",1:10,     #:level 1->4 elements:a,b,1~10,list()
+        list(                #··level 2->list 裡面又有:mr smith , data.frame
+          "Mr Smith",
+          data.frame(          #·· ··level 3->data.frame 內又有:v1,v2
+            v1=c(1,2),          #v1,v2->atomic vector
+            v2=c("aa","bb"),
+            stringsAsFactors = F
+          )
+        ))
+```
+
+```{r}
+library(readr)
+filmVotingData <- read_csv("https://raw.githubusercontent.com/tpemartin/course-107-1-programming-for-data-science/master/data/%E7%AC%AC%E4%B8%89%E5%B1%86%E7%B6%93%E6%BF%9F%E6%92%AD%E5%AE%A2%E7%AB%B6%E8%B3%BD%E5%8F%83%E8%B3%BD%E4%BD%9C%E5%93%81%E6%8A%95%E7%A5%A8%E7%B5%90%E6%9E%9C%E6%A8%A3%E6%9C%AC%20-%20Sheet1.csv")
+```
+
+```{r}
+filmVotingData$請選擇你最喜歡的影片二部 %>%
+  str_split(", (?!(by))") -> filmVotingResult #list
+ #可參考stringr，regular expression 的應用
+```
+```{r}
+filmVotingResult %>% unlist 
+```
+
+## Object extraction
+```{r}
+plasticContainer <- list(
+  greenBox=c("paper","scissor"),     # location 1
+  redBox=c(1L,3L,2.5),               # location 2
+  blueBox=c(TRUE,FALSE,TRUE,TRUE)    # location 3
+)
+```
+
+```{r}
+plasticContainer[c("greenBox","redBox")] # or plasticContainer[c(1,2)]
+#[ ] ->一個list裡面只有“greenBox” 和 “redBox” ,so 仍有母體結構
+
+plasticContainer[c("greenBox")] # or plasticContainer[c(1,2)]
+```
+
+```{r}
+plasticContainer[["greenBox"]] # or plasticContainer[[1]]
+#[[ ]]-> 進入大箱子內拿出小箱子裡面的東西，so 沒有母體結構
+```
+
