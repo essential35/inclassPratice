@@ -98,6 +98,7 @@ for (i in seq_along(college)) {
   collegeBorrow[[i]]<-collegeBorrow_i
 }
 names(collegeBorrow)<-college
+
 ```
 
 ```{r}
@@ -170,21 +171,23 @@ result2
 ```
 
 ```{r}
+libraryData$學院 %>% as.factor %>% levels -> college
+libraryData$入學年 %>% as.factor %>% levels -> enteryear
+
 #for-double loops
-libraryData$入學年 %>% unique ->entranceyear
-entranceyearBorrow<-vector("numeric",length(entranceyear))
+borrowCount2<-matrix(rep(0,3*(length(enteryear)*length(college))),ncol = 3)
 for (i in seq_along(college)) {
-  for (j in seq_along(entranceyear)) {
-    entranceyear_j<-entranceyear[j]
-  numericalIndexForSubsample<-which(libraryData$入學年==entranceyear_j)
-  entranceyearsubsample_j<- libraryData[numericalIndexForSubsample,]
-  entranceyearBorrow_j<-nrow(entranceyearsubsample_j) 
-  entranceyearBorrow[[j]]<-entranceyearBorrow_j
+  for (j in seq_along(enteryear)) {
+    borrowCount2_i<-borrowCount2[i,]
+    borrowCount2_j<-borrowCount2[i,j]
+  numericalIndexForSubsample<-which(libraryData$學院==students_i)
+    
+    borrowCount2_ij<libraryData[,(libraryData$學院==i & libraryData$入學年==j)]
+    borrowCount2[i,j]<-nrow(borrowCount_ij)
   }
-  
 }
-names(collegeBorrow)<-college
-names(entranceyearBorrow)<-entranceyear
+
+borrowCount2
 ```
 
 ```{r}
@@ -226,5 +229,38 @@ libraryData[["書籍館藏地"]] %>% class
 ```{r}
 cat("hello\nworld\n")
 ```
+
+```{r}
+log10(c(2,3))
+```
+
+# Filter observations
+```{r}
+libraryData %>%
+  filter(入學年==100, 學院=="社會科學院") #出來的結果會兩個條件都符合
+```
+
+```{r}
+libraryData %>%
+  filter(between(入學年,100,102), 學院=="社會科學院")
+#between--100<入學年<120,(class要一樣)
+
+libraryData %>% 
+  filter(入學年 %>% between(100,102), 學院=="社會科學院")
+```
+##rep
+```{r}
+rep(1:4, 2) #1~4 印兩邊
+rep(1:4, each = 2)       # 1～4，每個數字連續兩遍
+rep(1:4, c(2,2,2,2))     # same as second.
+rep(1:4, c(2,1,2,1))     #第一個出現的元素（既1）印兩遍，2印一遍
+rep(1:4, each = 2, len = 4)    # first 4 only.每個都連續印兩遍，但只出現前4個
+rep(1:4, each = 2, len = 10)   # 8 integers plus two recycled 1's.
+rep(1:4, each = 2, times = 3)  # length 24, 3 complete replications
+
+```
+
+
+
 
 
