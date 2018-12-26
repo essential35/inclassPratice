@@ -60,11 +60,14 @@ plasticContainer <- list(
 plasticContainer[c("greenBox","redBox")] # or plasticContainer[c(1,2)]
 #[ ] ->一個list裡面只有“greenBox” 和 “redBox” ,so 仍有母體結構
 
-plasticContainer[c("greenBox")] # or plasticContainer[c(1,2)]
+plasticContainer[[c("greenBox")]][1] # or plasticContainer[c(1,2)]
+plasticContainer["greenBox"]$greenBox[1]#前面一個[ ]，表示plastic container 裡面只有green box，再用 [[]] or $把green box拿出來，拿出第一樣東西
 ```
 
 ```{r}
 plasticContainer[["greenBox"]] # or plasticContainer[[1]]
 #[[ ]]-> 進入大箱子內拿出小箱子裡面的東西，so 沒有母體結構
+
+plasticContainer$greenBox
 ```
 
