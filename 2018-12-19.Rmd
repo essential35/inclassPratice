@@ -37,6 +37,8 @@ filmVotingData <- read_csv("https://raw.githubusercontent.com/tpemartin/course-1
 ```
 
 ```{r}
+library(dplyr)
+library(stringr)
 filmVotingData$請選擇你最喜歡的影片二部 %>%
   str_split(", (?!(by))") -> filmVotingResult #list
  #可參考stringr，regular expression 的應用
